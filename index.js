@@ -2,19 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const dataUser = [
     {
       id: 1,
-      name: "JohnDoe",
-      password: "password123",
+      name: "demo",
+      password: "123456",
     },
     {
       id: 2,
       name: "JaneDoe",
       password: "password456",
-    },
-    {
-      id: 3,
-      name: "haideptrai",
-      password: "123456",
-    },
+    }
   ];
 
   function UserLogin(event) {
@@ -37,23 +32,28 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Login successful!");
       window.location.href = "dashboard.html";
     }
+
     if (rememberMeId) {
-      localStorage.setItem("rememberedUser", usernameValue);
-      localStorage.setItem("rememberedPassword", passwordValue);
+      const userInfo = {
+        username: usernameValue,
+        password: passwordValue,
+      }
+      localStorage.setItem("rememberedUser", JSON.stringify(userInfo))
     } else {
       localStorage.removeItem("rememberedUser");
-      localStorage.removeItem("rememberedPassword");
     }
   }
+
   document.getElementById("loginForm").addEventListener("submit", UserLogin);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
   let rememberedUser = localStorage.getItem("rememberedUser");
-  let rememberedPassword = localStorage.getItem("rememberedPassword");
-  if (rememberedUser && rememberedPassword) {
-    document.getElementById("username").value = rememberedUser;
-    document.getElementById("password").value = rememberedPassword;
+
+  if (rememberedUser) {
+    const userInfo = JSON.parse(rememberedUser);
+    document.getElementById("username").value = userInfo.username;
+    document.getElementById("password").value = userInfo.password;
     document.getElementById("remember-me").checked = true;
   }
 });
